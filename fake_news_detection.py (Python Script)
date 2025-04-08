@@ -1,0 +1,47 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+# Load the dataset
+# Sample dataset format: 'title', 'text', 'label' (where label is 1 for fake news, 0 for real news)
+# You can replace this with a more comprehensive dataset.
+data = pd.read_csv('fake_news_dataset.csv')
+
+# Preprocessing the data
+X = data['text']  # Independent variable (text)
+y = data['label']  # Dependent variable (1 for fake, 0 for real)
+
+# Splitting the data into training and testing sets (80% training, 20% testing)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Text vectorization using TfidfVectorizer
+vectorizer = TfidfVectorizer(stop_words='english', max_features=5000)
+X_train_tfidf = vectorizer.fit_transform(X_train)
+X_test_tfidf = vectorizer.transform(X_test)
+
+# Model: RandomForestClassifier
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train_tfidf, y_train)
+
+# Prediction
+y_pred = model.predict(X_test_tfidf)
+
+# Accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Accuracy: {accuracy * 100:.2f}%')
+
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+print('Confusion Matrix:')
+print(cm)
+
+# Test the model with a custom news article
+custom_text = input("Enter a news article to classify: ")
+custom_text_tfidf = vectorizer.transform([custom_text])
+prediction = model.predict(custom_text_tfidf)
+if prediction == 1:
+    print("The news article is fake.")
+else:
+    print("The news article is real.")￼Enter
