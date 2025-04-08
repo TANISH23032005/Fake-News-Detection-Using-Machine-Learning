@@ -1,0 +1,242 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Fake News Detection using Python\n",
+    "\n",
+    "This project aims to identify and classify news articles as real or fake using machine learning techniques. We’ll use a dataset of news articles and apply a text classification model to detect fake news.\n",
+    "\n",
+    "**Tools/Libraries used:**\n",
+    "- Pandas, NumPy\n",
+    "- Scikit-learn\n",
+    "- TF-IDF Vectorizer\n",
+    "- PassiveAggressiveClassifier"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Importing necessary libraries\n",
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sns\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+    "from sklearn.linear_model import PassiveAggressiveClassifier\n",
+    "from sklearn.metrics import accuracy_score, confusion_matrix"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Load the dataset\n",
+    "df = pd.read_csv('news.csv')  # Ensure 'news.csv' is in the same folder\n",
+    "print(df.shape)\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Check for null values\n",
+    "df.isnull().sum()"
+   ]
+  },
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Fake News Detection using Python\n",
+    "\n",
+    "This project aims to identify and classify news articles as real or fake using machine learning techniques. We’ll use a dataset of news articles and apply a text classification model to detect fake news.\n",
+    "\n",
+    "**Tools/Libraries used:**\n",
+    "- Pandas, NumPy\n",
+    "- Scikit-learn\n",
+    "- TF-IDF Vectorizer\n",
+    "- PassiveAggressiveClassifier"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Importing necessary libraries\n",
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sns\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+    "from sklearn.linear_model import PassiveAggressiveClassifier\n",
+    "from sklearn.metrics import accuracy_score, confusion_matrix"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Load the dataset\n",
+    "df = pd.read_csv('news.csv')  # Ensure 'news.csv' is in the same folder\n",
+    "print(df.shape)\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Check for null values\n",
+    "df.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Separating the data and label\n",
+    "X = df['text']\n",
+    "y = df['label']\n",
+    "\n",
+    "# Splitting the dataset into training and testing sets\n",
+    "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n",
+    "\n",
+    "# Vectorizing text data using TF-IDF\n",
+    "tfidf_vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)\n",
+    "X_train_tfidf = tfidf_vectorizer.fit_transform(X_train)\n",
+    "X_test_tfidf = tfidf_vectorizer.transform(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Training a PassiveAggressiveClassifier\n",
+    "model = PassiveAggressiveClassifier(max_iter=50)\n",
+    "model.fit(X_train_tfidf, y_train)\n",
+    "\n",
+    "# Making predictions\n",
+    "y_pred = model.predict(X_test_tfidf)\n",
+    "\n",
+    "# Accuracy\n",
+    "accuracy = accuracy_score(y_test, y_pred)\n",
+    "print(f\"Accuracy: {round(accuracy * 100, 2)}%\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Confusion matrix\n",
+    "conf_mat = confusion_matrix(y_test, y_pred)\n",
+    "print(conf_mat)\n",
+    "\n",
+    "# Visualizing confusion matrix\n",
+    "sns.heatmap(conf_mat, annot=True, fmt='d', cmap='Blues')\n",
+    "plt.xlabel('Predicted')\n",
+    "plt.ylabel('Actual')\n",
+    "plt.title('Confusion Matrix')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Conclusion\n",
+    "\n",
+    "We successfully built a Fake News Detection model using TF-IDF and Passive Aggressive Classifier. With simple preprocessing and model training, we achieved strong accuracy. You can try other classifiers like Logistic Regression, SVM, or even deep learning for better performance."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "name": "python",
+   "version": "3.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}￼Enter  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Separating the data and label\n",
+    "X = df['text']\n",
+    "y = df['label']\n",
+    "\n",
+    "# Splitting the dataset into training and testing sets\n",
+    "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n",
+    "\n",
+    "# Vectorizing text data using TF-IDF\n",
+    "tfidf_vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)\n",
+    "X_train_tfidf = tfidf_vectorizer.fit_transform(X_train)\n",
+    "X_test_tfidf = tfidf_vectorizer.transform(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Training a PassiveAggressiveClassifier\n",
+odel = PassiveAggressiveClassifier(max_iter=50)\n",
+    "model.fit(X_train_tfidf, y_train)\n",
+    "\n",
+    "# Making predictions\n",
+    "y_pred = model.predict(X_test_tfidf)\n",
+    "\n",
+    "# Accuracy\n",
+    "accuracy = accuracy_score(y_test, y_pred)\n",
+    "print(f\"Accuracy: {round(accuracy * 100, 2)}%\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Confusion matrix\n",
+    "conf_mat = confusion_matrix(y_test, y_pred)\n",
+    "print(conf_mat)\n",
+    "\n",
+    "# Visualizing confusion matrix\n",
+    "sns.heatmap(conf_mat, annot=True, fmt='d', cmap='Blues')\n",
+    "plt.xlabel('Predicted')\n",
+    "plt.ylabel('Actual')\n",
+    "plt.title('Confusion Matrix')\n",
