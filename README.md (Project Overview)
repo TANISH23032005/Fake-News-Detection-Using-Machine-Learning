@@ -1,0 +1,27 @@
+# Fake News Detection
+
+This project is a simple machine learning solution for detecting fake news using text classification. It uses **TF-IDF Vectorization** and **Logistic Regression** to determine whether a news article is **fake (1)** or **real (0)**.
+
+---
+
+## Project Overview
+
+- **Goal**: Build and train a machine learning model to classify news as fake or real.
+- **Model**: Logistic Regression
+- **Text Processing**: TF-IDF Vectorizer
+- **Output File**: `model.pkl` – the trained model you can load later for predictions.
+
+---
+
+## Dataset
+
+A basic dataset with labeled examples is used for this demo. You can later replace this with a larger dataset from platforms like [Kaggle](https://www.kaggle.com/c/fake-news/data).
+
+| Text                                                         | Label |
+|--------------------------------------------------------------|-------|
+| "NASA confirms water on the moon."                           |   0   |
+| "The earth is flat and NASA lies."                           |   1   |
+| "COVID-19 vaccines are effective."                           |   0   |
+| "Aliens secretly run the government."                        |   1   |
+
+---
